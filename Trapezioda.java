@@ -16,9 +16,14 @@ public class Trapezioda{
 	}
 
 
-	public Trapezioda(float[] x, float[] y, float acceptableError) {
+	public Trapezioda(float[] x, float[] y, float acceptableError) throws Exception{
 		this.x = x;
 		this.y = y;
+
+		if (acceptableError < 1.0e-7f ) {
+			throw new Exception("value acceptableError " + acceptableError + " is more little than float persistence value");
+		}
+
 		this.acceptableError = acceptableError;
 	}
 
@@ -35,7 +40,7 @@ public class Trapezioda{
 				sumY += dataY;
 			}
 
-			System.out.println("distance : " + distance);
+			this.distance = distance;
 
 			area = (distance / 2) * (arrayY[0] + (2 * (sumY - arrayY[0] - arrayY[arrayY.length - 1] )) + arrayY[arrayY.length - 1] );
 
@@ -70,9 +75,10 @@ public class Trapezioda{
 		float[] dataX = {0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f};
 		float[] dataY = {2.0f, 3.0f, 6.0f, 5.0f, 4.0f, 1.0f};
 
-		Trapezioda trpzd = new Trapezioda(dataX, dataY);
 		try {
-		System.out.println("area : " + trpzd.estimateArea());
+		Trapezioda trpzd = new Trapezioda(dataX, dataY, 1.0E-7f);
+		System.out.println("luas area prediksi adalah : " + trpzd.estimateArea());
+		System.out.println("dengan distance : " + trpzd.distance);
 		} catch (Exception e) {
 			System.out.println("error : " + e.toString());
 		} 
